@@ -14,8 +14,17 @@ import os
 class PickerBot():
 
     def __init__(self, data, model):
-        self.data = data
+        self.safe_root = "/safe/directory"  # Define a safe root directory
+        self.data = self.validate_path(data)
         self.model = model
+
+    def validate_path(self, path):
+        # Normalize the path
+        fullpath = os.path.normpath(os.path.join(self.safe_root, path))
+        # Ensure the path is within the safe root directory
+        if not fullpath.startswith(self.safe_root):
+            raise Exception("Invalid path: Access denied")
+        return fullpath
 
     def data_proc(self):
 
