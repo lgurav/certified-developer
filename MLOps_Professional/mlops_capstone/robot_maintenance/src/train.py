@@ -209,7 +209,7 @@ class RoboMaintenance:
             raise ValueError("Path is not within the allowed model directory.")
 
         logger.info("Saving Scaler")
-        with open(real_scaler_path, "wb") as fh:
+        with open(self.scaler_path, "wb") as fh:
             joblib.dump(self.robust_scaler, fh.name)
 
         logger.info("Saving Scaler as MLFLow Artifact")
