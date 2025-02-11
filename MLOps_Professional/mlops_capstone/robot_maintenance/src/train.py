@@ -201,11 +201,12 @@ class RoboMaintenance:
         sanitized_model_path = secure_filename(model_path)
         normalized_model_path = os.path.normpath(sanitized_model_path)
         self.scaler_path = os.path.join(SAFE_BASE_DIR, normalized_model_path, self.model_name + "_scaler.joblib")
-        if not os.path.commonpath([os.path.realpath(self.scaler_path), os.path.realpath(SAFE_BASE_DIR)]) == os.path.realpath(SAFE_BASE_DIR):
+        real_scaler_path = os.path.realpath(self.scaler_path)
+        if not real_scaler_path.startswith(os.path.realpath(SAFE_BASE_DIR) + os.sep):
             raise ValueError("Path is not within the allowed model directory.")
 
         logger.info("Saving Scaler")
-        with open(self.scaler_path, "wb") as fh:
+        with open(real_scaler_path, "wb") as fh:
             joblib.dump(self.robust_scaler, fh.name)
 
         logger.info("Saving Scaler as MLFLow Artifact")
